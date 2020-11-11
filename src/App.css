@@ -8,7 +8,7 @@
 .slick-slide {
   text-align: center;
   color: #419be0;
-  background: white;
+  margin: 0 5px 0 5px;
 }
 
 .App {
@@ -20,6 +20,10 @@
   align-items: center;
   justify-content: center;
   color: white;
+}
+
+.info-card {
+  font-size: 1rem;
 }
 
 /*
