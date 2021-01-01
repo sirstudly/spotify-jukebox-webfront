@@ -3,6 +3,8 @@ import React from 'react';
 import 'slick-carousel';
 import Slider from "react-slick";
 
+const SPOTIFY_SERVICE_HOST = process.env.SPOTIFY_SERVICE_HOST || "http://192.168.16.4:3000";
+
 function getImageUrl(imageArr) {
     const preferredImageUrl = imageArr.find(img => img.width >= 250 && img.width <= 350);
     if(preferredImageUrl) {
@@ -57,7 +59,7 @@ class PlayableItem extends React.Component {
     handleQueueTrack(trackUri) {
         console.log("queue track clicked: " + trackUri);
         this.setState({componentDisabled: true});
-        fetch("http://192.168.16.4:3000/queue-track?trackUri=" + trackUri)
+        fetch(SPOTIFY_SERVICE_HOST + "/queue-track?trackUri=" + trackUri)
             .then(resp => resp.text())
             .then(resp => console.log("QUEUE response: " + resp))
             .catch(err => console.error(err));
@@ -69,7 +71,7 @@ class PlayableItem extends React.Component {
     handlePlay(uri) {
         console.log("play clicked: " + uri);
         this.setState({componentDisabled: true});
-        fetch("http://192.168.16.4:3000/play?contextUri=" + uri)
+        fetch(SPOTIFY_SERVICE_HOST + "/play?contextUri=" + uri)
             .then(resp => resp.text())
             .then(resp => console.log("PLAY response: " + resp))
             .catch(err => console.error(err));
@@ -104,7 +106,7 @@ class TrackList extends React.Component {
 
     handleAfterChange(currentSlide) {
         if (currentSlide + (2 * this.slick.props.slidesToScroll) >= this.props.tracks.length + this.state.tracks.length) {
-            fetch("http://192.168.16.4:3000/search-all?terms=" + encodeURI(this.props.searchTerms) + "&types=track&skip=" + this.state.tracks.length)
+            fetch(SPOTIFY_SERVICE_HOST + "/search-all?terms=" + encodeURI(this.props.searchTerms) + "&types=track&skip=" + this.state.tracks.length)
                 .then(resp => resp.json())
                 .then(resp => {
                     this.setState({
@@ -252,7 +254,7 @@ class Spotify extends React.Component {
         console.log("button clicked");
         console.log(event);
         event.preventDefault();
-        fetch("http://192.168.16.4:3000/search-all?terms=" + encodeURI(this.state.searchTerms))
+        fetch(SPOTIFY_SERVICE_HOST + "/search-all?terms=" + encodeURI(this.state.searchTerms))
             .then(resp => resp.json())
             .then(resp => {
                 console.log("Got a response back!");
